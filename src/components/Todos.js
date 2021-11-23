@@ -13,7 +13,7 @@ const Todos = ({ todos }) => {
     return (
         <>
             <h2 style={myStyle}>{userName}'s Todos</h2>
-            <h4>useContext used to obtain userName</h4>
+            <h4>useContext used to obtain userName and update userName value on login</h4>
             {todos.map((todo, index) => {
                 return <p key={index}>{todo}</p>;
             })}

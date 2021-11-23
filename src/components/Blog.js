@@ -1,17 +1,23 @@
-import {Button, Card, CloseButton} from "react-bootstrap";
+import {Button, Card, CloseButton, Col, Row} from "react-bootstrap";
 
 function Blog(props) {
 
     return (
-        <Card style={{ width: '18rem' }}>
-            <Card.Body>
-                <Card.Title>{props.blog.name}</Card.Title>
-                <Card.Text>
-                    {props.blog.content}
-                </Card.Text>
-                <CloseButton onClick={() => props.delete(props.blog.id)} />
-            </Card.Body>
-        </Card>
+        <Col md={4} className='mt-4'>
+            <Card style={{ height: '20rem' }}>
+                <Card.Header>
+                    <Row>
+                    <Col><h4>{props.blog.name}</h4></Col>
+                    <Col xs='auto'><CloseButton onClick={() => props.delete(props.blog.id)}/></Col>
+                    </Row>
+                </Card.Header>
+                <Card.Body>
+                    <Card.Text>
+                        {props.blog.content}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        </Col>
     )
 }
 

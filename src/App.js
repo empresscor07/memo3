@@ -5,18 +5,19 @@ import Blogs from "./components/Blogs";
 import Contact from "./components/Contact";
 import {useState, createContext} from "react";
 import Login from "./components/Login";
-import {Col, Container, Row} from "react-bootstrap";
+import {Button, Col, Container, Nav, Navbar, Row} from "react-bootstrap";
 
 // export this to be accessed in any child components of app
 // no longer need to pass value as props through each child
 // wrap the parent component app's return value in <UserContext.Provider> tags
 export const UserContext = createContext("Corey");
+export const BlogContext = createContext([{id: 0, name: "My article", content: "my content blah blah blah"}, {id: 1, name: "Another blog", content: "some new content to read!"}])
 
-export default function App() {
+export function App() {
 
   // react is returning tags - we can return react child components (functions) as tags
-  const [userName, setUserName] = useState("Corey")
-
+  const [context, setContext] = useState("Corey")
+  const [blogs, setBlogs] = useState([{id: 0, name: "My article", content: "my content blah blah blah"}, {id: 1, name: "Another blog", content: "some new content to read!"}])
   // useState returns an array with 2 values and we are destructuring the array into two variables
   // will give us a boolean value and a function to set the boolean value
   let [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -35,40 +36,52 @@ export default function App() {
   }
 
   return (
-      <Container fluid='md'> <Row><Col>
-        {isLoggedIn ?
-        <UserContext.Provider value={userName}>
-          <div className="App">
-            <Router>
-              <div>
-                <Link to="/">Home</Link>
-              </div>
-              <div>
-                <Link to="/blogs">Blog Articles</Link>
-              </div>
-              <div>
-                <Link to="/contact">Contact Me</Link>
-              </div>
-              <div>
-                <button onClick={handleLogout}>Log out</button>
-              </div>
+      <UserContext.Provider value={[context, setContext]}>
 
+      <Container fluid='md'>
+        {isLoggedIn ?
+
+          <div className="App">
+
+              <Router>
+                <Row className='mt-2'>
+                <Col>
+                  <div>
+                    <Link to="/">Home</Link>
+                  </div>
+                </Col>
+                <Col>
+                  <div>
+                    <Link to="/blogs">Blog Articles</Link>
+                  </div>
+                </Col>
+                <Col>
+                  <div>
+                    <Link to="/contact">Contact Me</Link>
+                  </div>
+                </Col>
+                <Col>
+                  <div>
+                    <Button variant='danger' className='mt-1' onClick={handleLogout}>Log out</Button>
+                  </div>
+                </Col>
+                </Row>
               <hr />
 
               <Routes>
-                <Route exact path="/" element={<Home userName={userName}/>}/>
-                <Route path="/blogs" element={<Blogs />}/>
+                <Route exact path="/" element={<Home />}/>
+                <Route path="/blogs" element={<BlogContext.Provider value={[blogs, setBlogs]}><Blogs /></BlogContext.Provider>}/>
                 <Route path="/contact" element={<Contact />}/>
               </Routes>
             </Router>
           </div>
-        </UserContext.Provider>
+
 
         :
 
-        <Login userName={userName} onSuccessfulLogin={loginSuccess}/>}
-      </Col></Row></Container>
-
+        <Login onSuccessfulLogin={loginSuccess}/>}
+      </Container>
+      </UserContext.Provider>
   );
 }
 

@@ -1,8 +1,11 @@
 // function will take in params object as an argument
 // fields can be accessed using dot notation
 import {Button, Container, Form} from "react-bootstrap";
+import {UserContext} from "../App";
+import {useContext} from "react";
 
 function Login(params) {
+    const [context, setContext] = useContext(UserContext)
     function handleSubmit(event) {
         // takes in the click event - we called it event here
         // don't have to take it but can if we want to do something with it
@@ -10,7 +13,8 @@ function Login(params) {
         // form from submitting a post request
         event.preventDefault()
         const password = document.getElementById('pass').value
-        const username = document.getElementById('name').value
+        setContext(document.getElementById('name').value)
+
         // we use === instead of == because a string object will not be the same as another string object
         // so == will always fail, === compares the content of the objects which is what we want
         if (password === 'pass') {
@@ -22,7 +26,7 @@ function Login(params) {
     return (
         // can only return a single top level tag - so here we wrap all in <div> tags
         <Container>
-            <h1>Please Log in, {params.userName}</h1>
+            <h1>Please Log in {context}</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group>
                     <Form.Label>Username</Form.Label>

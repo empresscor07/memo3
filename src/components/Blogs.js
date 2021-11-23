@@ -1,6 +1,7 @@
 import Blog from "./Blog";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
+import {BlogContext} from "../App";
 
 const Blogs = () => {
 
@@ -9,6 +10,7 @@ const Blogs = () => {
     const [content, setContent] = useState('')
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [blogs, setBlogs] = useContext(BlogContext)
 
     function addBlog(e) {
         e.preventDefault()
@@ -24,9 +26,9 @@ const Blogs = () => {
         setBlogs(blogs.filter(blog => blog.id !== id))
     }
 
-    const [blogs, setBlogs] = useState([{id: 0, name: "My article", content: "my content blah blah blah"}, {id: 1, name: "Another blog", content: "some new content to read!"}])
+
     return (
-        <div>
+        <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
@@ -49,11 +51,12 @@ const Blogs = () => {
                 <Col><h1>Blog Articles</h1></Col>
                 <Col className='col-sm-auto'><Button onClick={handleShow}>Add Blog</Button></Col>
             </Row>
-
-            {
-                blogs.map(blog => <Blog delete={deleteBlog} blog={blog}/>)
-            }
-        </div>
+            <Row>
+                {
+                    blogs.map(blog => <Blog delete={deleteBlog} blog={blog}/>)
+                }
+            </Row>
+        </>
     )
 };
 
